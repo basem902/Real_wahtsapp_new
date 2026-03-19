@@ -1,0 +1,11 @@
+Method,Name,Error,Occurrences
+GET,[Admin] Marketer Analytics,CatchResponseError('[Admin] Marketer Analytics: 429'),1
+GET,[Admin] Notifications,CatchResponseError('[Admin] Notifications: 429'),1
+GET,[Admin] WhatsApp Status,CatchResponseError('[Admin] WhatsApp Status: 429'),1
+GET,[Admin] AI Analytics,CatchResponseError('[Admin] AI Analytics: 429'),2
+GET,[Admin] Stats,CatchResponseError('[Admin] Stats: 429'),3
+GET,[Admin] Search Properties,CatchResponseError('[Admin] Search Properties: 500'),13
+GET,[Admin] Backup History,CatchResponseError('[Admin] Backup History: 429'),1
+POST,[Admin] Add Property,CatchResponseError('[Admin] Add Property: 400'),9
+GET,[Admin] List Properties,CatchResponseError('[Admin] List Properties: 500'),42
+GET,[Admin] Subscription,CatchResponseError('[Admin] Subscription: 429'),2
