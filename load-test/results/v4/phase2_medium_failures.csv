@@ -1,0 +1,23 @@
+Method,Name,Error,Occurrences
+GET,[Admin] List Properties,CatchResponseError('[Admin] List Properties: 429'),92
+GET,[Admin] Marketer Analytics,CatchResponseError('[Admin] Marketer Analytics: 429'),39
+GET,[Admin] Notifications,CatchResponseError('[Admin] Notifications: 429'),138
+GET,[Admin] WhatsApp Status,CatchResponseError('[Admin] WhatsApp Status: 429'),96
+GET,[Admin] AI Analytics,CatchResponseError('[Admin] AI Analytics: 429'),81
+GET,[Admin] Team Performance,CatchResponseError('[Admin] Team Performance: 429'),64
+GET,[Admin] Search Properties,CatchResponseError('[Admin] Search Properties: 429'),56
+GET,[Admin] Auto Responses,CatchResponseError('[Admin] Auto Responses: 429'),71
+GET,[Admin] Team,CatchResponseError('[Admin] Team: 429'),52
+POST,[Admin] Add Property,CatchResponseError('[Admin] Add Property: 403'),7
+GET,[Admin] Stats,CatchResponseError('[Admin] Stats: 429'),128
+GET,[Admin] Search Properties,CatchResponseError('[Admin] Search Properties: 500'),38
+POST,[Admin] Add Property,CatchResponseError('[Admin] Add Property: 429'),32
+GET,[Admin] Backup History,CatchResponseError('[Admin] Backup History: 429'),22
+GET,[Public] Health,CatchResponseError('Health: 429'),186
+GET,[Admin] Knowledge,CatchResponseError('[Admin] Knowledge: 429'),55
+POST,[Admin] Add Property,CatchResponseError('[Admin] Add Property: 400'),13
+GET,[Admin] List Properties,CatchResponseError('[Admin] List Properties: 500'),56
+GET,[Public] Plans,HTTPError('429 Client Error: Too Many Requests for url: [Public] Plans'),37
+GET,[Admin] Settings,CatchResponseError('[Admin] Settings: 429'),39
+GET,[Admin] Subscription,CatchResponseError('[Admin] Subscription: 429'),51
+GET,[Bot] Health,HTTPError('429 Client Error: Too Many Requests for url: [Bot] Health'),69
