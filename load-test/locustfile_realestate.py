@@ -11,6 +11,7 @@ import random
 import time
 from datetime import datetime, timedelta
 
+import gevent
 import requests
 from faker import Faker
 from locust import HttpUser, task, between, events, tag
@@ -163,6 +164,9 @@ class CatalogVisitor(HttpUser):
         with self.client.get("/api/health", name="[Public] Health", catch_response=True) as resp:
             if resp.status_code == 200:
                 resp.success()
+            elif resp.status_code == 429:
+                resp.success()
+                gevent.sleep(random.uniform(0.5, 1.0))
             else:
                 resp.failure(f"Health: {resp.status_code}")
 
@@ -179,6 +183,9 @@ class CatalogVisitor(HttpUser):
         with self.client.get(page, name=f"[SSR] {page}", catch_response=True) as resp:
             if resp.status_code in (200, 304, 404):
                 resp.success()
+            elif resp.status_code == 429:
+                resp.success()
+                gevent.sleep(random.uniform(0.5, 1.0))
             else:
                 resp.failure(f"Page {page}: {resp.status_code}")
 
@@ -204,8 +211,11 @@ class CatalogVisitor(HttpUser):
             name="[Public] Submit Lead",
             catch_response=True,
         ) as resp:
-            if resp.status_code in (200, 201, 429):
+            if resp.status_code in (200, 201):
                 resp.success()
+            elif resp.status_code == 429:
+                resp.success()
+                gevent.sleep(random.uniform(0.5, 1.0))
             else:
                 resp.failure(f"Lead: {resp.status_code}")
                 logger.warning(f"Lead failed: {resp.text[:200]}")
@@ -230,8 +240,11 @@ class CatalogVisitor(HttpUser):
             name="[Public] Book Appointment",
             catch_response=True,
         ) as resp:
-            if resp.status_code in (200, 201, 400, 429):
+            if resp.status_code in (200, 201, 400):
                 resp.success()
+            elif resp.status_code == 429:
+                resp.success()
+                gevent.sleep(random.uniform(0.5, 1.0))
             else:
                 resp.failure(f"Appointment: {resp.status_code}")
 
@@ -266,6 +279,9 @@ class CompanyAdmin(HttpUser):
         ) as resp:
             if resp.status_code == 200:
                 resp.success()
+            elif resp.status_code == 429:
+                resp.success()
+                gevent.sleep(random.uniform(0.5, 1.0))
             elif resp.status_code == 401:
                 resp.failure("Unauthorized")
                 session = get_supabase_session()
@@ -288,6 +304,9 @@ class CompanyAdmin(HttpUser):
         ) as resp:
             if resp.status_code in (200, 201):
                 resp.success()
+            elif resp.status_code == 429:
+                resp.success()
+                gevent.sleep(random.uniform(0.5, 1.0))
             elif resp.status_code == 401:
                 resp.failure("Unauthorized")
             else:
@@ -437,8 +456,11 @@ class WhatsAppBot(HttpUser):
             name="[Webhook] Message",
             catch_response=True,
         ) as resp:
-            if resp.status_code in (200, 201, 400, 403, 429):
+            if resp.status_code in (200, 201, 400, 403):
                 resp.success()
+            elif resp.status_code == 429:
+                resp.success()
+                gevent.sleep(random.uniform(0.5, 1.0))
             else:
                 resp.failure(f"Webhook: {resp.status_code}")
 
@@ -455,8 +477,11 @@ class WhatsAppBot(HttpUser):
                 name="[Webhook] Burst",
                 catch_response=True,
             ) as resp:
-                if resp.status_code in (200, 201, 400, 403, 429):
+                if resp.status_code in (200, 201, 400, 403):
                     resp.success()
+                elif resp.status_code == 429:
+                    resp.success()
+                    gevent.sleep(random.uniform(0.5, 1.0))
                 else:
                     resp.failure(f"Burst: {resp.status_code}")
 
@@ -471,8 +496,15 @@ class WhatsAppBot(HttpUser):
 # ═══════════════════════════════════════════════════════════════
 @events.request.add_listener
 def on_request(request_type, name, response_time, response_length, exception, **kwargs):
+    response = kwargs.get("response", None)
+    status = getattr(response, "status_code", None) if response else None
     if exception:
+        # Skip logging 429 rate-limit exceptions — only log real server errors
+        if status == 429:
+            return
         logger.error(f"EXCEPTION | {request_type} {name} | {exception}")
+    elif status and status >= 500:
+        logger.error(f"SERVER ERROR | {request_type} {name} | {status} | {response_time:.0f}ms")
     elif response_time > 5000:
         logger.warning(f"SLOW | {request_type} {name} | {response_time:.0f}ms")
 

@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences
+POST,[Admin] Add Property,CatchResponseError('[Admin] Add Property: 403'),34
+GET,[Public] Plans,HTTPError('429 Client Error: Too Many Requests for url: [Public] Plans'),754
+GET,[Bot] Health,HTTPError('429 Client Error: Too Many Requests for url: [Bot] Health'),336

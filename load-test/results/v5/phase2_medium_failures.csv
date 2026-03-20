@@ -1,0 +1,3 @@
+Method,Name,Error,Occurrences
+POST,[Admin] Add Property,CatchResponseError('[Admin] Add Property: 403'),57
+GET,[Bot] Health,HTTPError('429 Client Error: Too Many Requests for url: [Bot] Health'),20
